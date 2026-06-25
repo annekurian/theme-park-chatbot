@@ -1,9 +1,8 @@
-# 🎢 AI-Powered Customer Support & Review Summarizer
+# 🎢 AI-Powered Customer Support
 
 A full-stack TypeScript monorepo built with **Bun** that combines two AI capabilities:
 
 1. **Wonderworld Chatbot** — a knowledge-grounded customer support agent for the fictional theme park _Wonderworld_, engineered to answer only from a curated knowledge base and refuse out-of-scope queries
-2. **Review Summarizer** — automatically generates concise summaries of customer reviews for 5 electronics products using AI
 
 > Built as a prototype project based on the _"Build AI-powered Apps"_ course by Mosh Hamedani.
 
@@ -17,19 +16,12 @@ A full-stack TypeScript monorepo built with **Bun** that combines two AI capabil
 - **Prompt-engineered refusals** — out-of-scope questions (anything not in the knowledge base) are gracefully declined rather than hallucinated
 - **Persona consistency** — the agent maintains a Wonderworld-specific voice throughout the conversation
 
-### 📝 Review Summarizer
-
-- **Persistent MySQL backend** — product reviews and AI-generated summaries are stored in a MySQL database, not hardcoded in memory
-- **Prisma ORM** — all database access goes through a typed Prisma client with a repository pattern, keeping data logic cleanly separated from route handlers
-- **Cached summaries** — once a product's reviews are summarized, the result is persisted to the database; subsequent requests return the stored summary instead of calling the LLM again
-- Covers 5 seeded electronics products with realistic review data
-
 ---
 
 ## 🏗️ Architecture
 
 ```
-ChatBot-and-Review-Summarizer/
+ChatBot/
 ├── index.ts                        # Entry point — runs client & server concurrently
 ├── package.json                    # Root workspace config (Bun monorepo)
 ├── packages/
@@ -37,15 +29,12 @@ ChatBot-and-Review-Summarizer/
 │   │   └── src/
 |   |      |___components/
 │   │             ├── chat/         # Chat UI — sends messages, renders responses
-│   │             └── reviews/      # Review picker UI + summary display
 │   └── server/                     # Backend API (TypeScript + Bun)
 │       ├── controllers/            # Gateway - handle HTTP requests and responses
 │       ├── services/               # Calls OpenAI model to generate response
 │       ├── repositories/           # Fetches or stores data
 │       ├── prompts/
 │       │   └── Wonderworld.md      # 📄 Theme park knowledge base (rides, hours, FAQs)
-│       └── prisma/
-│       |   └── schema.prisma       # DB schema: Product, Review, Summary models
 |       └── routes.ts               # API Endpoints
 ├── .husky/                         # Pre-commit hooks
 └── .prettierrc                     # Code formatting config
@@ -61,8 +50,8 @@ ChatBot-and-Review-Summarizer/
 ### Installation
 
 ```bash
-git clone https://github.com/annekurian/ChatBot-and-Review-Summarizer.git
-cd ChatBot-and-Review-Summarizer
+git clone https://github.com/annekurian/theme-park-chatbot.git
+cd theme-park-chatbot
 bun install
 ```
 
@@ -95,8 +84,6 @@ This starts both the client and server concurrently via `concurrently`.
 | Backend     | Express.js                   |
 | HTTP Client | Axios                        |
 | AI          | OpenAI API (GPT)             |
-| Database    | MySQL                        |
-| ORM         | Prisma                       |
 | Dev tooling | Husky, lint-staged, Prettier |
 
 ---
@@ -117,20 +104,6 @@ This starts both the client and server concurrently via `concurrently`.
 [Response displayed in chat UI]
       ↓
 [Repeat — history grows with each turn]
-```
-
-### Review Summarizer
-
-```
-[User selects a product from dropdown]
-      ↓
-[Client sends product reviews to /api/summarize]
-      ↓
-[Server prompts LLM: "Summarize these reviews..."]
-      ↓
-[LLM returns: pros / cons / overall verdict]
-      ↓
-[Summary card displayed to user]
 ```
 
 ---
