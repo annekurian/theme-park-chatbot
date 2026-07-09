@@ -44,7 +44,7 @@ const ChatBot = ({ initialPrompt }: Props = {}) => {
       setIsBotTyping(true);
       popAudio.play();
 
-      const { data } = await axios.post<ChatResponse>(`{BASE_URL}/api/chat`, {
+      const { data } = await axios.post<ChatResponse>(`${BASE_URL}/api/chat`, {
         prompt,
         conversationId: conversationId.current,
       });
