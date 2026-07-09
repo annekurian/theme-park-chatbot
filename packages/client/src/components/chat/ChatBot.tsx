@@ -7,6 +7,8 @@ import ChatInput, { type ChatFormData } from './ChatInput';
 import popSound from '@/assets/sounds/pop.mp3';
 import notificationSound from '@/assets/sounds/notification.mp3';
 
+const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
+
 const popAudio = new Audio(popSound);
 popAudio.volume = 0.2;
 
@@ -42,7 +44,7 @@ const ChatBot = ({ initialPrompt }: Props = {}) => {
       setIsBotTyping(true);
       popAudio.play();
 
-      const { data } = await axios.post<ChatResponse>('/api/chat', {
+      const { data } = await axios.post<ChatResponse>('${BASE_URL}/api/chat', {
         prompt,
         conversationId: conversationId.current,
       });
